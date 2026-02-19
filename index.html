@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Category Randomizer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-glob"></div>
+    <div class="background-glob glob-2"></div>
+
+    <header>
+        <h1>Team Category Randomizer</h1>
+        <p>Assign Categories to 50 Teams Instantly</p>
+    </header>
+
+    <main>
+        <div class="controls">
+            <button id="randomizeBtn" class="btn primary">
+                <span class="btn-content">Randomize Categories</span>
+                <div class="btn-glow"></div>
+            </button>
+            <button id="resetBtn" class="btn secondary">Reset</button>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Makanan Berat</h3>
+                <span id="count-berat">0</span>
+            </div>
+            <div class="stat-card">
+                <h3>Makanan Ringan</h3>
+                <span id="count-ringan">0</span>
+            </div>
+            <div class="stat-card">
+                <h3>Minuman</h3>
+                <span id="count-minuman">0</span>
+            </div>
+        </div>
+
+        <div id="teamGrid" class="team-grid">
+            <!-- Teams will be generated here -->
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
