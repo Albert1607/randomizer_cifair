@@ -62,16 +62,27 @@ async function startRandomization() {
     // Add shuffling effect
     document.body.classList.add('shuffling');
 
-    // Menerapkan urutan tetap dari pengguna
-    const FIXED_SEQUENCE = [
-        'berat', 'minuman', 'ringan', 'berat', 'minuman', 'ringan', 'berat', 'minuman', 'ringan', 'berat',
-        'minuman', 'berat', 'ringan', 'minuman', 'berat', 'ringan', 'minuman', 'berat', 'ringan', 'berat',
-        'minuman', 'ringan', 'berat', 'minuman', 'berat', 'ringan', 'minuman', 'berat', 'ringan', 'berat',
-        'minuman', 'berat', 'ringan', 'minuman', 'berat', 'ringan', 'minuman', 'berat', 'ringan', 'berat',
-        'minuman', 'berat', 'ringan', 'minuman', 'berat', 'minuman', 'ringan', 'berat', 'minuman', 'berat'
+    // Menerapkan urutan tetap tenant dari pengguna
+    const TENANT_SLOTS = [
+        { slot: 1, categoryId: 'berat' }, { slot: 2, categoryId: 'minuman' }, { slot: 3, categoryId: 'ringan' }, { slot: 4, categoryId: 'berat' }, { slot: 5, categoryId: 'minuman' },
+        { slot: 6, categoryId: 'ringan' }, { slot: 7, categoryId: 'berat' }, { slot: 8, categoryId: 'minuman' }, { slot: 9, categoryId: 'ringan' }, { slot: 10, categoryId: 'berat' },
+        { slot: 11, categoryId: 'minuman' }, { slot: 12, categoryId: 'ringan' }, { slot: 13, categoryId: 'berat' }, { slot: 14, categoryId: 'minuman' }, { slot: 15, categoryId: 'ringan' },
+        { slot: 16, categoryId: 'berat' }, { slot: 17, categoryId: 'minuman' }, { slot: 18, categoryId: 'berat' }, { slot: 19, categoryId: 'minuman' }, { slot: 20, categoryId: 'ringan' },
+        { slot: 21, categoryId: 'berat' }, { slot: 22, categoryId: 'minuman' }, { slot: 23, categoryId: 'ringan' }, { slot: 24, categoryId: 'berat' }, { slot: 25, categoryId: 'minuman' },
+        { slot: 26, categoryId: 'ringan' }, { slot: 27, categoryId: 'minuman' }, { slot: 28, categoryId: 'berat' }, { slot: 29, categoryId: 'ringan' }, { slot: 30, categoryId: 'minuman' },
+        { slot: 31, categoryId: 'berat' }, { slot: 32, categoryId: 'ringan' }, { slot: 33, categoryId: 'minuman' }, { slot: 34, categoryId: 'berat' }, { slot: 35, categoryId: 'ringan' },
+        { slot: 36, categoryId: 'berat' }, { slot: 37, categoryId: 'minuman' }, { slot: 38, categoryId: 'ringan' }, { slot: 39, categoryId: 'berat' }, { slot: 40, categoryId: 'minuman' },
+        { slot: 41, categoryId: 'ringan' }, { slot: 42, categoryId: 'minuman' }, { slot: 43, categoryId: 'berat' }, { slot: 44, categoryId: 'ringan' }, { slot: 45, categoryId: 'minuman' },
+        { slot: 46, categoryId: 'berat' }, { slot: 47, categoryId: 'ringan' }, { slot: 48, categoryId: 'minuman' }, { slot: 49, categoryId: 'berat' }, { slot: 50, categoryId: 'berat' }
     ];
 
-    let deck = FIXED_SEQUENCE.map(id => CATEGORIES.find(c => c.id === id));
+    let deck = [...TENANT_SLOTS];
+
+    // Fisher-Yates Shuffle to randomize the slot assignments
+    for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
 
     // Randomize
     for (let i = 0; i < teams.length; i++) {
@@ -80,15 +91,16 @@ async function startRandomization() {
         // Small stagger for effect
         await new Promise(r => setTimeout(r, 20)); 
         
-        // Use the shuffled deck
-        // Fallback to random if deck runs out (though it shouldn't for 50 teams)
-        const randomCat = deck[i] || CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
+        // Assign random tenant slot
+        const assignedSlot = deck[i];
+        const categoryData = CATEGORIES.find(c => c.id === assignedSlot.categoryId);
         
-        team.category = randomCat;
+        team.category = categoryData;
+        team.tenantSlot = assignedSlot.slot;
         
         const badge = document.getElementById(`badge-${team.id}`);
-        badge.className = `category-badge ${randomCat.class}`;
-        badge.innerText = randomCat.name;
+        badge.className = `category-badge ${categoryData.class}`;
+        badge.innerHTML = `<strong>${assignedSlot.slot}</strong> - ${categoryData.name}`;
         
         // Trigger reflow for animation
         badge.style.animation = 'none';
