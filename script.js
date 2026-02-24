@@ -62,18 +62,16 @@ async function startRandomization() {
     // Add shuffling effect
     document.body.classList.add('shuffling');
 
-    // Create a deck with fixed distribution
-    // 20 Makanan Berat, 15 Makanan Ringan, 15 Minuman
-    let deck = [];
-    for (let i = 0; i < 20; i++) deck.push(CATEGORIES.find(c => c.id === 'berat'));
-    for (let i = 0; i < 15; i++) deck.push(CATEGORIES.find(c => c.id === 'ringan'));
-    for (let i = 0; i < 15; i++) deck.push(CATEGORIES.find(c => c.id === 'minuman'));
+    // Menerapkan urutan tetap dari pengguna
+    const FIXED_SEQUENCE = [
+        'berat', 'minuman', 'ringan', 'berat', 'minuman', 'ringan', 'berat', 'minuman', 'ringan', 'berat',
+        'minuman', 'berat', 'ringan', 'minuman', 'berat', 'ringan', 'minuman', 'berat', 'ringan', 'berat',
+        'minuman', 'ringan', 'berat', 'minuman', 'berat', 'ringan', 'minuman', 'berat', 'ringan', 'berat',
+        'minuman', 'berat', 'ringan', 'minuman', 'berat', 'ringan', 'minuman', 'berat', 'ringan', 'berat',
+        'minuman', 'berat', 'ringan', 'minuman', 'berat', 'minuman', 'ringan', 'berat', 'minuman', 'berat'
+    ];
 
-    // Fisher-Yates Shuffle
-    for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
-    }
+    let deck = FIXED_SEQUENCE.map(id => CATEGORIES.find(c => c.id === id));
 
     // Randomize
     for (let i = 0; i < teams.length; i++) {
