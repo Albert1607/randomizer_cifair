@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ciputra Fair 2026</title>
+    <title>Selling Day O-Week 2026</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,8 +15,8 @@
     <div class="background-glob glob-2"></div>
 
     <header>
-        <h1>Ciputra Fair 2026</h1>
-        <p>Assign Categories to 50 Teams</p>
+        <h1>Selling Day O-Week 2026</h1>
+        <p id="headerSubtitle">Assign Categories to 100 Teams</p>
     </header>
 
     <main>
@@ -27,27 +27,61 @@
             </button>
             <button id="resetBtn" class="btn secondary">Reset</button>
             <button id="exportBtn" class="btn secondary" disabled>Export .xlsx</button>
+            <button id="editSettingsBtn" class="btn secondary settings-btn">⚙ Edit Settings</button>
         </div>
 
-        <div class="stats-container">
-            <div class="stat-card">
-                <h3>Makanan Berat</h3>
-                <span id="count-berat">0</span>
-            </div>
-            <div class="stat-card">
-                <h3>Makanan Ringan</h3>
-                <span id="count-ringan">0</span>
-            </div>
-            <div class="stat-card">
-                <h3>Minuman</h3>
-                <span id="count-minuman">0</span>
-            </div>
+        <div id="statsContainer" class="stats-container">
+            <!-- Stats will be rendered dynamically by JS -->
         </div>
 
         <div id="teamGrid" class="team-grid">
             <!-- Teams will be generated here -->
         </div>
     </main>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>⚙ Edit Settings</h2>
+                <button class="modal-close" id="modalCloseBtn">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-section">
+                    <label class="setting-label">Jumlah Tim</label>
+                    <input type="number" id="settingTeamCount" class="modal-input team-count-input" min="1" value="100">
+                </div>
+
+                <div class="setting-section">
+                    <div class="section-title-row">
+                        <label class="setting-label">Kategori &amp; Kuota</label>
+                        <button class="btn-add-cat" id="addCatBtn">+ Tambah Kategori</button>
+                    </div>
+                    <p class="quota-hint" id="quotaHint">Total kuota: <strong id="quotaTotal">0</strong> / <strong id="quotaTarget">100</strong></p>
+                    <table class="category-table">
+                        <thead>
+                            <tr>
+                                <th>Nama Kategori</th>
+                                <th>Warna</th>
+                                <th>Kuota</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoryTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="modalCancelBtn">Batal</button>
+                <button class="btn primary" id="modalSaveBtn">
+                    <span class="btn-content">Simpan</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="script.js"></script>
